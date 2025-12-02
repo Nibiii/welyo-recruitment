@@ -4,7 +4,7 @@ PKG= ./cmd/server
 GOFILES=$(shell find . -name "*.go" -not -path "*/vendor/*")
 FMT=$(GOFILES)
 
-.PHONY: fmt lint test build run
+.PHONY: fmt lint test build run docker-build docker-run
 
 fmt:
 	@echo "Running go fmt..."
@@ -25,3 +25,11 @@ build:
 run:
 	@echo "Running $(APP_NAME)..."
 	SERVER_HELLO="HELLO!" PORT=8080 go run $(PKG)
+
+docker-build:
+	@echo "Building docker image..."
+	docker build -t $(APP_NAME):local .
+
+docker-run:
+	@echo "Running docker container..."
+	docker run -p 8080:8080 -e SERVER_HELLO="HELLO AGAIN!" $(APP_NAME):local
