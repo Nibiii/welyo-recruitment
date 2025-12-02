@@ -1,0 +1,10 @@
+welyo-recruitment-task
+*.test
+*.out
+go.work
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+nohup.out
