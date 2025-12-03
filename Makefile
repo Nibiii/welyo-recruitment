@@ -4,7 +4,7 @@ PKG= ./cmd/server
 GOFILES=$(shell find . -name "*.go")
 FMT=$(GOFILES)
 
-.PHONY: fmt fmt-check lint security vet check clean test build run docker-build docker-run
+.PHONY: fmt fmt-check lint security vet test build run docker-build docker-run
 
 fmt:
 	@echo "Running go fmt..."
@@ -12,7 +12,8 @@ fmt:
 
 fmt-check:
 	@echo "Checking formatting..."
-	@if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then \
+	@count="$$(gofmt -s -l . | wc -l | tr -d '[:space:]')"; \
+	if [ "$$count" -gt 0 ]; then \
 		echo "The following files are not formatted:"; \
 		gofmt -s -l .; \
 		exit 1; \
@@ -30,20 +31,13 @@ security:
 	@echo "Running security scan..."
 	@if ! command -v gosec &> /dev/null; then \
 		echo "Installing gosec..."; \
-		go install github.com/securecodewarrior/gosec/v2/cmd/gosec@latest; \
+		go install github.com/securego/gosec/v2/cmd/gosec@latest; \
 	fi
 	gosec ./...
 
 vet:
 	@echo "Running go vet..."
 	go vet ./...
-
-check: fmt-check vet lint security test
-	@echo "All checks passed!"
-
-clean:
-	@echo "Cleaning up..."
-	rm -f $(APP_NAME)
 	
 test:
 	@echo "Running tests..."
@@ -63,4 +57,4 @@ docker-build:
 
 docker-run: docker-build
 	@echo "Running docker container..."
-	docker run -p 8082:8082 -e SERVER_HELLO="HELLO AGAIN!" -e PORT=8082 $(APP_NAME):local
+	docker run -p 8080:8080 -e SERVER_HELLO="HELLO AGAIN!" -e PORT=8080 $(APP_NAME):local
