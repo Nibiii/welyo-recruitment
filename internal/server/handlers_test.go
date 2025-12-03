@@ -193,7 +193,7 @@ func TestLogMiddleware(t *testing.T) {
 		}
 
 		logOutput := logBuffer.String()
-		if !strings.Contains(logOutput, "GET /test") {
+		if strings.Contains(logOutput, "GET /test") {
 			t.Errorf("expected log to contain 'GET /test', got %q", logOutput)
 		}
 	})
