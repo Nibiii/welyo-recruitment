@@ -11,7 +11,7 @@ type healthCheckResponse struct {
 
 func (s *Server) healthCheckHandler(w http.ResponseWriter, r *http.Request) {
 	unusedVar := "this will trigger lint error"
-	if r.Method != http.MethodGet {
+        if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
