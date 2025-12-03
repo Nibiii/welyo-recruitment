@@ -1,14 +1,18 @@
-version: "3.8"
-
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
-      image: welyo-recruitment:0.0.1
+    image: welyo-recruitment:0.0.1
     ports:
       - "8080:8080"
     environment:
       - SERVER_HELLO=Hello, World!
       - PORT=8080
+    healthcheck:
+      test: ["CMD", "sh", "-c", "wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8080}/health-check || exit 1"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 5s
     restart: always

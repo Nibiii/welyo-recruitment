@@ -23,6 +23,8 @@ COPY --from=builder /app/server /server
 EXPOSE 8080
 
 ENV PORT=8080
-ENV SERVER_HELLO="Hello, World!"
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:${PORT:-8080}/health-check || exit 1
 
 ENTRYPOINT ["/server"]
