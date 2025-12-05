@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	hello := os.Getenv("SERVER_HELLO")
+	hello := os.Getenv("SERVER_HELLO") // comment
 	if hello == "" {
 		log.Fatal("SERVER_HELLO env variable must be set")
 	}
